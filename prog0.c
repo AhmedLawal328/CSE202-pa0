@@ -20,8 +20,7 @@ char hexDigit(char c);
 // returns true if x has any even bit equal to 1, 0 otherwise
 int any_even_one(unsigned x){
     unsigned mask = 0x55555555;
-    int res = mask & x;
-    return res;
+    return mask & x;
 }
 // returns a mask indicating the position of the left most one in x
 int leftmost_one(unsigned x){
@@ -34,10 +33,22 @@ int leftmost_one(unsigned x){
 }
 // returns x shifted n positions to the left with the n most significant bits of x 
 // inserted at the right of x
-unsigned rotate_left(unsigned x, int n);
+unsigned rotate_left(unsigned x, int n){
+    // 0x02001210 << 
+    unsigned left_mask = x << n;
+    unsigned right_mask = x >> 32 - n;
+    return left_mask | right_mask;
+
+}
 // returns x shifted n positions to the right with the n least significant bits of x 
 // inserted at the left of x
-unsigned rotate_right(unsigned x, int n);
+unsigned rotate_right(unsigned x, int n){
+
+    unsigned right_mask = x >> n;
+    unsigned left_mask = x << 32-n;
+    return right_mask | left_mask;
+
+}
 // returns x+y if no overflow occurs
 // returns TMAX if a positive overflow occurs
 // returns TMIN if a negative overflow occurs
@@ -55,23 +66,31 @@ int main(int argc, char **argv) {
     }
 
     union value v;
-   
-    if (strcmp(argv[1], "even") == 0) {
+    v.uval = strtoul(argv[2], NULL, 16);
+    if (v.uval == 0){
+        printf("Invalid hex value");
+        return 1;
+    }
 
-        v.uval = strtoul(argv[2], NULL, 16);
+    if (strcmp(argv[1], "even") == 0) {
+     
         int num = any_even_one(v.uval);
         printf("%s\n", num ? "True" : "False"); 
 
     } else if (strcmp(argv[1], "left") == 0) {
-        v.uval = strtoul(argv[2], NULL, 16);
         int num = leftmost_one(v.uval);
         printf("%x\n", num);
 
     } else if (strcmp(argv[1], "rrotate") == 0) {
-
+        // Get digit by subtracting '0'
+        int n = argv[3][0] - '0';
+        int num = rotate_right(v.uval, n);
+        printf("%x", num);
 
     } else if (strcmp(argv[1], "lrotate") == 0) {
-
+        int n = argv[3][0] - '0';
+        int num = rotate_left(v.uval, n);
+        printf("%x", num);
 
     } else if (strcmp(argv[1], "saturate") == 0) {
 

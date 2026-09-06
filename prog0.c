@@ -94,7 +94,6 @@ int main(int argc, char **argv) {
 
     } else if (strcmp(argv[1], "saturate") == 0) {
 
-
     } else if (strcmp(argv[1], "twice") == 0) {
 
 

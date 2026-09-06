@@ -19,12 +19,19 @@ char hexDigit(char c);
 
 // returns true if x has any even bit equal to 1, 0 otherwise
 int any_even_one(unsigned x){
-    int mask = 0x55555555;
+    unsigned mask = 0x55555555;
     int res = mask & x;
     return res;
 }
 // returns a mask indicating the position of the left most one in x
-int leftmost_one(unsigned x);
+int leftmost_one(unsigned x){
+    unsigned mask = 0x80000000;
+    
+    while ((mask & x) == 0) {
+        mask >>= 1;
+    }
+    return mask;
+}
 // returns x shifted n positions to the left with the n most significant bits of x 
 // inserted at the right of x
 unsigned rotate_left(unsigned x, int n);
@@ -52,11 +59,13 @@ int main(int argc, char **argv) {
     if (strcmp(argv[1], "even") == 0) {
 
         v.uval = strtoul(argv[2], NULL, 16);
-        int even = any_even_one(v.uval);
-        printf("%s\n", even ? "True" : "False"); 
+        int num = any_even_one(v.uval);
+        printf("%s\n", num ? "True" : "False"); 
 
     } else if (strcmp(argv[1], "left") == 0) {
-
+        v.uval = strtoul(argv[2], NULL, 16);
+        int num = leftmost_one(v.uval);
+        printf("%x\n", num);
 
     } else if (strcmp(argv[1], "rrotate") == 0) {
 

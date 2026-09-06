@@ -18,7 +18,11 @@ int read_hex(union value *v, char *input);
 char hexDigit(char c);
 
 // returns true if x has any even bit equal to 1, 0 otherwise
-int any_even_one(unsigned x);
+int any_even_one(unsigned x){
+    int mask = 0x55555555;
+    int res = mask & x;
+    return res;
+}
 // returns a mask indicating the position of the left most one in x
 int leftmost_one(unsigned x);
 // returns x shifted n positions to the left with the n most significant bits of x 
@@ -36,10 +40,46 @@ unsigned float_twice(unsigned f);
 // divides the binary representation of a float number f by 2
 unsigned float_half(unsigned f);
 
-int main(int argc, char** argv){
-    if(argc != 3 && argc != 4){
-        printf("Invalid number of arguments");
-        exit(0);
+int main(int argc, char **argv) {
+
+    if (argc != 3 && argc != 4) {
+        printf("Invalid number of arguments\n");
+        return 1;
     }
+
+    union value v;
+   
+    if (strcmp(argv[1], "even") == 0) {
+
+        v.uval = strtoul(argv[2], NULL, 16);
+        int even = any_even_one(v.uval);
+        printf("%s\n", even ? "True" : "False"); 
+
+    } else if (strcmp(argv[1], "left") == 0) {
+
+
+    } else if (strcmp(argv[1], "rrotate") == 0) {
+
+
+    } else if (strcmp(argv[1], "lrotate") == 0) {
+
+
+    } else if (strcmp(argv[1], "saturate") == 0) {
+
+
+    } else if (strcmp(argv[1], "twice") == 0) {
+
+
+    } else if (strcmp(argv[1], "half") == 0) {
+
+
+    } else if (strcmp(argv[1], "add") == 0) {
+
+
+    } else {
+        printf("Invalid operation\n");
+        return 1;
+    }
+
     return 0;
 }
